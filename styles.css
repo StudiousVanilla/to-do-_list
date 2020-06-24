@@ -1,0 +1,106 @@
+html {
+    height: fit-content;
+}
+body{
+    height: fit-content;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 3vw;
+    margin-top: 0;
+    background-image: linear-gradient(to bottom, rgb(247, 247, 247), rgb(176, 185, 7));
+}
+
+header{
+    padding-top: 1vw;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 20vw;
+}
+
+h1{
+    width: fit-content;
+    padding: 2vw 4vw 0vw 4vw;
+    border-radius: 999999px;
+    border: 1px rgb(3, 3, 3) solid;
+}
+
+#conatiner{
+    width: 100%;
+    display: flex;
+    margin-top: 1vw;
+    font-size: 4vw;
+}
+
+#list-container{
+    width: 85%;
+}
+
+#list-of-lists{
+    list-style-type: none;
+    padding-left: 2vw;
+    text-align: left; 
+}
+
+.todo-list{
+    text-align: center;
+    padding: 1vw 3vw 1vw 1vw;
+    margin-top: 2vw;
+    margin-left: -1vw;
+    border-top-right-radius: 999999px;
+    border-bottom-right-radius: 999999px;
+    border: 0.5vw solid rgb(245, 242, 242) ; 
+    background-color: rgb(207, 207, 80);
+}
+
+.todo-list:hover{
+    transform: scale(1.05);
+}
+
+.todo-list:active{
+    background-color: rgb(230, 230, 17);
+}
+
+#list-info{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    margin-top: 3vw;
+}
+
+.make-new-button{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    width: fit-content;
+    height: fit-content;
+    margin: 6vw;
+    margin-top: 1vw;
+    border: none;
+    border-radius: 9999px;
+    color: white;
+    background-color: rgb(33, 172, 33);
+    padding: 2vw;
+    padding-right: 3vw;
+    font-size: 5vw;
+}
+
+.records{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4vw;
+}
+
+.make-new-button:hover{
+    transform: scale(1.05);
+}
+
+.make-new-button:active{
+    background-color: rgb(31, 122, 31);
+}
