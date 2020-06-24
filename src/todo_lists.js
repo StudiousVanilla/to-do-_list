@@ -1,9 +1,8 @@
 // class, constructor and methods for the discrete To-Do lists/projects
 class TodoList {
-    constructor(name,items,category){
+    constructor(name,items){
         this.name = name
         this.items = items
-        this.category = category
     }
 
     // adds an item to the To-Do list
@@ -24,24 +23,19 @@ class TodoList {
         })
     }
 
-    // sets the value of the orignal array to the new array generated from 'deleteItemFromList()' which will have desir4d items removed
+    // sets the value of the orignal array to the new array generated from 'deleteItemFromList()' which will have desired items removed
     filterOutItem(title){
         this.items = this.deleteItemFromList(title)
-
     }
 
-    // complete items
+    // still needs logic *************
+    completeList(){
 
+        // still needs logic *************
 
-
-
-
-
-
-
-
-
-
+        console.log("You completed this list: "+this.name)
+        return this.name
+    }
 
 }
 

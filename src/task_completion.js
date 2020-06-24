@@ -5,12 +5,17 @@ class TaskCompletion{
     }
 
     // increase tasks completed
-
-    // decrease tasks completed
+    taskCompleted(){
+        this.tasksCompleted++
+        this.tasksUncompleted--
+    }
 
     // increase tasks uncompleted
+    taskCreated(){
+        this.tasksUncompleted++
+    }
+}
 
-    // decrease tasks uncompleted
-
-
+export{
+    TaskCompletion
 }
