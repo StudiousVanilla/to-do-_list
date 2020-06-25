@@ -16,7 +16,7 @@ class ListItem {
             this.title = newTitle;
         }
         if(newNotes!=null && newNotes!=""){
-            this.description = newNotes
+            this.notes = newNotes
         }
         if(newDueDate!=null && newDueDate!=""){
             this.dueDate = newDueDate
@@ -24,15 +24,6 @@ class ListItem {
         if(newPriority!=null && newPriority!=""){
             this.priority = newPriority
         }
-    }
-
-    // still needs logic ****************
-    completeItem(){
-
-        // still needs logic
-
-        console.log("You completed this task: "+this.title)
-        return this.title
     }
 
 }
