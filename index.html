@@ -5,25 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rinne mé</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/ec2a80e7f4.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
-        <h1>Rinne mé</h1>
+        <div class="task-counter">Remaining <div id="tasks-remaining">2</div> </div>
+        <h1 class='logo'>Rinne mé</h1>
+        <div class="task-counter">Completed <div id = "tasks-completed">3</div> </div>
     </header>
-    <div id="conatiner">
+
+
+    <div id="container">
         <div id="list-container">
             <ul id="list-of-lists">
-                <li class="todo-list">Shopping</li>
-                <li class="todo-list">Exercise</li>
-                <li class="todo-list">Work</li>
             <ul>
         </div>
+        <div id="new-buttons-container">
+            <div id="new-list-container">
+                <p id="new-list-label">List</p>
+                <button id="new-list-button">+</button>
+            </div>
+        </div>
+    </div>
 
-        <div id="list-info">
-            <button class="make-new-button">+ New List </button>
-            <button class="make-new-button">+ New Task</button>
-            <div class="records">Tasks Completed: <span>1</span></div>
-            <div class="records">Tasks Remaining: <span>5</span></div>
+    <div class="overlay-list">
+        <div class="one-list-holder">
+            <div class="hexagon">
+                <div class="task-numbers" id="task-numbers-one"></div>
+            </div>
+            <p class="one-list-name"></p>
+            <button class="add-task-button">+ Task</button>
+            <button id="home-button"> <i class="fas fa-home"></i></button>
+            <ul class="list-of-items"> 
+                <!-- This is the parent. All its insides are rendered from JS-->
+            </ul>
         </div>
     </div>
     
