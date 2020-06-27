@@ -103,15 +103,6 @@ class ControlPanel{
     }
 
     buttonListen(){
-        // logic for clicking new list
-        let newListButton = document.querySelector('#new-list-button')
-        newListButton.addEventListener('click',(e)=>{
-            e.preventDefault()
-            console.log("New List");
-        })
- 
-
-
 
         /* logic for clickig on lists */
 
@@ -147,7 +138,7 @@ class ControlPanel{
                 addTaskButton.setAttribute("id",list.id)
 
                 // sets the border colour for a list by its priority value
-                listName.style.borderColor = listHolder.getList(list.id)["priority"]
+                listName.style.borderColor = "var(--priority-"+listHolder.getList(list.id)["priority"]+")"
 
                 // sets hexagon indicator to the same length as the items object
                 listHexagon.innerHTML = listHolder.getList(list.id)["items"].length
@@ -169,10 +160,6 @@ class ControlPanel{
 
          /**********************************************************/
 
-
-
-
-
         // reverses visibility of lists and list-of-lists
         let homeButton = document.querySelector('#home-button')
         homeButton.addEventListener('click',(e)=>{
@@ -189,13 +176,75 @@ class ControlPanel{
 
 
 
+
+
+
+
+        // Explain!!!!!!!!!!
+        let addTaskForm = document.querySelector('#item-form-container')
         let addTaskButton = document.querySelector('.add-task-button')
         addTaskButton.addEventListener('click',(e)=>{
+            e.preventDefault()
+            overlayList.style.transition = "0s"
+            overlayList.style.visibility = "hidden"
+            addTaskForm.style.transition = "0.5s"
+            addTaskForm.style.visibility="visible"
+            addTaskForm.style.height = "fit-content"
+            addTaskForm.style.bottom = "65%"
+
+            // put form submission stuff here
             let button = e.target
             console.log(button.id);
-            
+        })
+
+
+        // reverses visibility of new task form and list of items elements
+        let cancelAddTaskButton = document.querySelector('#cancel-new-task')
+        cancelAddTaskButton.addEventListener('click',(e)=>{
+            e.preventDefault()
+            addTaskForm.style.transition = "0s"
+            addTaskForm.style.bottom = "100%"
+            addTaskForm.style.height = "0.1vw"
+            addTaskForm.style.visibility = "hidden"
+            overlayList.style.transition = "0.5s"
+            overlayList.style.visibility = "visible"
             
         })
+
+
+
+
+
+
+
+
+
+
+
+         // Explain!!!!!!!!!!
+        let newListForm = document.querySelector('#list-form-container')
+        let newListButton = document.querySelector('#new-list-button')
+        newListButton.addEventListener('click',(e)=>{
+            e.preventDefault()
+            container.style.visibility = "hidden"
+            newListForm.style.transition = "0.5s"
+            newListForm.style.visibility = "visible"
+            newListForm.style.height = "fit-content"
+            newListForm.style.top = "20%"
+        })
+
+
+        // reverses visibility of new list form and container elements
+        let cancelNewlistButton = document.querySelector('#cancel-new-list')
+        cancelNewlistButton.addEventListener('click', (e)=>{
+            e.preventDefault()
+            newListForm.style.transition = "0s"
+            newListForm.style.top = "100%"
+            newListForm.style.visibility = "hidden"
+            newListForm.style.height = "0.1vw"
+            container.style.visibility = "visible"
+        })
+
 
     }
 
@@ -224,9 +273,7 @@ controlPanel.newItem("Exercise","Clothes","Shorts","Friday",1)
 render.renderLists(listHolder.lists)
 controlPanel.buttonListen()
 
-controlPanel.newList("Books",1)
-render.renderLists(listHolder.lists)
-controlPanel.buttonListen()
+
 
 
 
@@ -251,7 +298,7 @@ controlPanel.buttonListen()
 
 
 
-
+// form appears - adjust height and visibility + top: 80%?;
 // add list - (hopefully without fully re-rendering) - form design
 // complete list
 // delete list
@@ -259,7 +306,7 @@ controlPanel.buttonListen()
 
 
 
-
+// form appears - adjust height and visibility + bottom: 80%;
 // add items to a list (hopefully without fully re-rendering) - form design
 // complete items
 // delete items
