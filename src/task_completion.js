@@ -14,6 +14,10 @@ class TaskCompletion{
     taskCreated(){
         this.tasksUncompleted++
     }
+
+    taskDeleted(){
+        this.tasksUncompleted--
+    }
 }
 
 export{

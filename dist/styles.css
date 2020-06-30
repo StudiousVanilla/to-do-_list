@@ -1,8 +1,8 @@
 html {
-    height: fit-content;
+    height: 100%;
 }
 body{
-    height: fit-content;
+    height: 100%;
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -49,7 +49,7 @@ h1{
 #item-form-container{
     position: absolute;
     z-index: 1;
-    bottom: 100%;
+    top: 100%;
     left: 20%;
     transition: 0.5s;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -174,7 +174,7 @@ h1{
 }
 
 #list-container{
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -188,7 +188,7 @@ h1{
     padding-left: 0;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: flex-end
+    justify-content: flex-end;
 }
 
 .list-holder{
@@ -200,9 +200,10 @@ h1{
 
 .list-name{
     text-align: left;
-    width: 50%;
+    width: 60%;
     border-bottom: 0.5vw solid var(--priority-1) ;
     margin-left: 1vw;
+    margin-right: 3vw;
 }
 
 .hexagon{
@@ -234,43 +235,43 @@ h1{
 }
 
 #new-buttons-container{
-    width: 20%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    align-content: flex-end;
+    margin-bottom: 3vw;
 }
 
-#new-list-container, #new-task-container{
+#new-list-container{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
 }
 
-#new-task-label,#new-list-label{
+#new-list-label{
     font-size: 5vw;
     text-align: center;
-    width: 100%;
-    margin-bottom: 1vw;
+    width: fit-content;
+    margin: 0;
 }
 
-#new-list-button, #new-task-button{
-    font-size: 7vw;
-    width: 12vw;
-    height: 12vw;
+#new-list-button{
+    font-size: 5vw;
+    width: 7vw;
+    height: 7vw;
     border:0.1vw solid white;
     color: white;
-    border-radius: 100%;
-    margin-bottom: 3vw;
+    border-radius: 10%;
+    margin-right: 6vw;
+    margin-left: 1vw;
 }
 
 #new-list-button{
     background-color: green;
 }
-
-#new-task-button{
-    background-color: rgb(255, 102, 0);
-}
-
 
 .overlay-list{
     font-size: 4vw;
@@ -318,7 +319,7 @@ h1{
     align-items: center;
 }
 
-#complete-item-button,#delete-item-button,.add-task-button{
+.complete-item-button,.delete-item-button,.add-task-button{
     border-radius: 100%;
     border: 0.1vw solid var(--priority-2);
     background-color: rgb(254, 255, 254);
@@ -357,7 +358,7 @@ h1{
     margin-left: 2vw;
 }
 
-#delete-item-button{
+.delete-item-button{
     background-color: rgb(223, 22, 22);
     opacity: 0.4;
     margin-top: 1vw;
@@ -450,4 +451,37 @@ h1{
     color: white;
     margin: 1vw 0 2vw 0;
     text-align: center;
+}
+
+
+
+
+
+.delete-list-button{
+    background-color: red; 
+    opacity: 0.8;
+    color: rgb(236, 230, 230);
+    border-radius: 99999999px;
+    border: none;
+    height: 5vw;
+    width: 5vw;
+    font-size: 2.5vw;
+    padding: 0;
+    margin-right: 1 vw;
+}
+
+.complete-list-button{
+    border-radius: 100%;
+    border: 0.1vw solid var(--priority-2);
+    background-color: rgb(254, 255, 254);
+    color: var(--priority-2);
+    margin-right: 5vw;
+    margin-left: 1vw;
+    height: 5vw;
+    width: 5vw;
+    font-size: 2.5vw;
+    text-align: center;
+    padding: 0;
+    font-weight: 900;
+    justify-self: flex-end;
 }

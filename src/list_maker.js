@@ -4,7 +4,9 @@ class ListMaker{
     constructor(){
     }
     createList(name,items,priority){
-        let list = new TodoList(name,items,priority)
+        let dirtyListName = name
+        let cleanListName = dirtyListName.replace(/\s/g, '-')
+        let list = new TodoList(cleanListName,items,priority)
         return list;
     }
 }

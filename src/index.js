@@ -68,7 +68,9 @@ class ControlPanel{
         // creates temporary list variable so store appropriate ToDo list
         let list = listHolder.getList(listname)
         // creats a new item object, and adds is to the relevant ToDo list
-        list.addItemToList(itemMaker.createItem(listname,title,notes,dueDate,priority))
+        list.addItemToList(itemMaker.createItem(listname,title,notes,dueDate,priority)) 
+        render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+
     }
 
     // when order items button is clicked (in a list)
@@ -83,6 +85,8 @@ class ControlPanel{
     removeItem(name,title){
         let list = listHolder.getList(name)
         list.filterOutItem(title)
+        taskCompletion.taskDeleted()
+        render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
     }
 
     // when complete item is clicked
@@ -93,6 +97,8 @@ class ControlPanel{
         // sends a completion message
         console.log("Task completed: "+ title);
         // removes item from list
+        taskCompletion.taskCompleted()
+        render.taskCompletionRender(taskCompletion.taskCompleted,taskCompletion.tasksUncompleted)
         list.filterOutItem(title)
     }
 
@@ -103,7 +109,6 @@ class ControlPanel{
     }
 
     buttonListen(){
-
         /* logic for clickig on lists */
 
         /**********************************************************/
@@ -115,7 +120,7 @@ class ControlPanel{
         let overlayList = document.querySelector(".overlay-list")
 
         // selects all the lists and click event logic to each 
-        let listButtons = document.querySelectorAll('.list-holder')
+        let listButtons = document.querySelectorAll('.list-name')
         // assigns logic to each list
         for(const listButton of listButtons){
 
@@ -132,7 +137,7 @@ class ControlPanel{
                 let list = e.target
                 // using DOM element id the name of the list is gotten
                 // this list name populates the listName DOM element
-                listName.innerHTML = list.id
+                listName.innerHTML = list.id.replace('-'," ")
 
                 // allows list name to be grabbed when clicking add task button
                 addTaskButton.setAttribute("id",list.id)
@@ -147,7 +152,7 @@ class ControlPanel{
                 // assign variable 'listItems' to the items of the list selected (using getlist())
                 let listItems = listHolder.getList(list.id)["items"]
 
-                // populate list with items here, calling function fro render module
+                // populate list with items here, calling function froM render module
                 for (const item of listItems){
                     render.rednerOneListItem(item.title,item.dueDate,item.notes,item.priority)
                 }
@@ -155,10 +160,44 @@ class ControlPanel{
                 container.style.visibility = "hidden"
                 overlayList.style.visibility = "visible"
                 overlayList.style.top = "18vw"
+
+                let deleteItemButtons = document.querySelectorAll('.delete-item-button')
+
+                for(const deleteItemButton of deleteItemButtons){
+                    deleteItemButton.addEventListener('click',(e)=>{
+                        e.preventDefault()
+                        let itemTitle = e.target.id.slice(0,-19);
+                        render.removeListItemRender(itemTitle)
+
+                        this.removeItem(list.id,itemTitle)
+                        listHexagon.innerHTML = listHolder.getList(list.id)["items"].length
+                    }) 
+                }
+
+                let completeItemButtons = document.querySelectorAll(".complete-item-button")
+
+                for (const completeItemButton of completeItemButtons){
+                    completeItemButton.addEventListener('click',(e)=>{
+                        e.preventDefault()
+                        let itemTitle = e.target.id.slice(0,-21);
+                        let item = document.querySelector('#'+itemTitle+'-item')
+                        item.style.transition = "0.5s"
+                        item.style.color =  completeItemButton.style.color
+                        setTimeout(()=>{render.removeListItemRender(itemTitle)},1000)
+                        
+
+                        this.removeItem(list.id,itemTitle)
+                        listHexagon.innerHTML = listHolder.getList(list.id)["items"].length
+                    })
+                }
+                
+
             })
-        }  
+        }
+
 
          /**********************************************************/
+
 
         // reverses visibility of lists and list-of-lists
         let homeButton = document.querySelector('#home-button')
@@ -168,60 +207,101 @@ class ControlPanel{
             overlayList.style.visibility = "hidden"
             overlayList.style.top = "100%"
 
+
+
             // removes anything rendered in the list-overlay
             let listItem = document.querySelector('.list-of-items')
             listItem.innerHTML=""
+
+            // updates list hexagonal task counter
+            for (const list of listHolder.lists){
+               let hexagon = document.querySelector("#task-numbers-"+list.name);
+                hexagon.innerHTML = list["items"].length  
+            }
+
+
+            
         })
 
 
-
-
-
-
-
-
-        // Explain!!!!!!!!!!
+        // logic for adding tasks
         let addTaskForm = document.querySelector('#item-form-container')
         let addTaskButton = document.querySelector('.add-task-button')
+        let listID = "";
+
         addTaskButton.addEventListener('click',(e)=>{
             e.preventDefault()
+
+            // CSS for making form appear and disdappear when relevant button clicked
             overlayList.style.transition = "0s"
             overlayList.style.visibility = "hidden"
             addTaskForm.style.transition = "0.5s"
             addTaskForm.style.visibility="visible"
             addTaskForm.style.height = "fit-content"
-            addTaskForm.style.bottom = "65%"
+            addTaskForm.style.top = "30vw"
 
-            // put form submission stuff here
-            let button = e.target
-            console.log(button.id);
+            // stores the name of the list based on which list the item will be added to
+            return listID = e.target["id"]            
         })
 
+        // identifies and adds event that listens for 'Add Task' submit button, submitting the item form
+        let submitItem = document.querySelector("#item-form")
+        submitItem.addEventListener('submit',(e)=>{
+            e.preventDefault()
+
+            let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+            if(format.test(submitItem.title.value)){
+                alert("Unfortunately special characters are not supported:\n[ ` ! @ # $ % ^ & * ( ) _ + \- = \ [\] { } ; ' : \\ | , .<>\ /?~]") 
+            }
+
+            else{
+
+                // makes a new item from inputs and adds this item to the relevant list
+                this.newItem(listID,submitItem.title.value, submitItem.dueDate.value, submitItem.notes.value, submitItem.priority.value);
+
+                // removes form and brings back list of items
+                addTaskForm.style.transition = "0s"
+                addTaskForm.style.top = "100%"
+                addTaskForm.style.height = "0.1vw"
+                addTaskForm.style.visibility = "hidden"
+                overlayList.style.transition = "0.5s"
+                overlayList.style.visibility = "visible"
+
+                // sets number of items in list Hexagon
+                let listHexagon = document.querySelector("#task-numbers-one")
+                listHexagon.innerHTML = listHolder.getList(listID)["items"].length
+                
+                // adds new item to bottom of the list
+                render.rednerOneListItem(submitItem.title.value, submitItem.dueDate.value, submitItem.notes.value, submitItem.priority.value)
+
+                // resets form values
+                submitItem.reset()
+
+                let oldWrapper = document.getElementById('mega-wrapper')
+                let newWrapper = oldWrapper.cloneNode(true);
+                oldWrapper.parentNode.replaceChild(newWrapper, oldWrapper)
+                this.buttonListen()
+            }
+
+        })
 
         // reverses visibility of new task form and list of items elements
         let cancelAddTaskButton = document.querySelector('#cancel-new-task')
         cancelAddTaskButton.addEventListener('click',(e)=>{
             e.preventDefault()
             addTaskForm.style.transition = "0s"
-            addTaskForm.style.bottom = "100%"
+            addTaskForm.style.top = "100%"
             addTaskForm.style.height = "0.1vw"
             addTaskForm.style.visibility = "hidden"
             overlayList.style.transition = "0.5s"
             overlayList.style.visibility = "visible"
+            submitItem.reset()
             
         })
+        
+        
 
-
-
-
-
-
-
-
-
-
-
-         // Explain!!!!!!!!!!
+         // logic for showing users the new list form and hiding container
         let newListForm = document.querySelector('#list-form-container')
         let newListButton = document.querySelector('#new-list-button')
         newListButton.addEventListener('click',(e)=>{
@@ -230,9 +310,8 @@ class ControlPanel{
             newListForm.style.transition = "0.5s"
             newListForm.style.visibility = "visible"
             newListForm.style.height = "fit-content"
-            newListForm.style.top = "20%"
+            newListForm.style.top = "30vw"
         })
-
 
         // reverses visibility of new list form and container elements
         let cancelNewlistButton = document.querySelector('#cancel-new-list')
@@ -243,78 +322,126 @@ class ControlPanel{
             newListForm.style.visibility = "hidden"
             newListForm.style.height = "0.1vw"
             container.style.visibility = "visible"
+            newList.reset()
         })
 
+        // logic for submitting new list 
+        let newList = document.querySelector('#list-form')
+        newList.addEventListener('submit',(e)=>{
+            e.preventDefault()
+            let format = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+            if(format.test(newList.name.value)){
+                alert("Unfortunately special characters are not supported:\n[ ` ! @ # $ % ^ & * ( ) _ + \- = \ [\] { } ; ' : \\ | , .<>\ /?~]")
+                
+            }
+            else{
+            
+            this.newList(newList.name.value,newList.priority.value)
 
+            newListForm.style.transition = "0s"
+            newListForm.style.top = "100%"
+            newListForm.style.visibility = "hidden"
+            newListForm.style.height = "0.1vw"
+            container.style.visibility = "visible"
+
+            render.renderLists(listHolder.lists)
+
+            newList.reset()
+
+            let oldWrapper = document.getElementById('mega-wrapper')
+            let newWrapper = oldWrapper.cloneNode(true);
+            oldWrapper.parentNode.replaceChild(newWrapper, oldWrapper)
+            this.buttonListen()
+             }
+        })
+
+        let deleteListButtons = document.querySelectorAll('.delete-list-button')
+        for (const deleteListButton of deleteListButtons){
+            deleteListButton.addEventListener('click',(e)=>{
+                e.preventDefault()
+                let listName = e.target.id.slice(7)
+                let hex = document.querySelector("#task-numbers-"+listName)
+
+                for(let i = 0; i < hex.innerHTML; i++){
+                    taskCompletion.taskDeleted()
+                }
+                this.removeList(listName)
+                render.removeListRender(listName)
+
+                render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+            })
+        }
+
+        let completeListButtons = document.querySelectorAll('.complete-list-button')
+        for (const completeListButton of completeListButtons){
+            completeListButton.addEventListener('click',(e)=>{
+                e.preventDefault()
+                let listName = e.target.id.slice(9)
+                let hex = document.querySelector("#task-numbers-"+listName)
+
+                for(let i = 0; i < hex.innerHTML; i++){
+                    taskCompletion.taskCompleted()
+                }
+
+
+                this.removeList(listName)
+                render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+
+                let listsCompleted = document.querySelectorAll("#"+listName)
+                for(const listCompleted of listsCompleted){
+                    listCompleted.style.transition = "0.5s"
+                    listCompleted.style.color = "green"            
+                    if(listCompleted.className === "list-name"){
+                        listCompleted.style.borderColor ="green"
+                    }
+
+                }
+                setTimeout(()=>{render.removeListRender(listName)},800)
+            })
+        }
     }
-
-
 
 }
 
-
-// variable that will control flow of everything
-let controlPanel = new ControlPanel();
+let controlPanel = new ControlPanel()
 
 
-// Made three lists for List Holder
-controlPanel.newList("Shopping",1)
-controlPanel.newList("Exercise",2)
-controlPanel.newList("Editing",3)
+// 1 get stored lists
+let storedLists =  JSON.parse(localStorage.getItem('lists'))
+console.log(storedLists);
 
-controlPanel.newItem("Shopping","Food","Carrots","Monday",1)
-controlPanel.newItem("Shopping","Clothes","Shorts","Friday",2)
-controlPanel.newItem("Shopping","Clothes","Shorts","Friday",1)
-controlPanel.newItem("Shopping","Clothes","Shorts","Friday",3)
+// 2 populate listholder with lists - use stored lists info
+console.log(listHolder.lists);
 
-controlPanel.newItem("Exercise","Push-ups","6 reps of 30","Tuesday",3)
-controlPanel.newItem("Exercise","Clothes","Shorts","Friday",1)
+// 3 populates lists with items - use stored lists info
 
-render.renderLists(listHolder.lists)
+// 4 render lists -- make a fcontrol panel function
+if(listHolder.lists.length === 0){
+    console.log("No lists");    
+}
+else{
+    render.renderLists(listHolder.lists)
+}
+
+// 5 button listen
 controlPanel.buttonListen()
 
+// 6 clear localStorage
+//localStorage.clear()
+
+// 7 set localStorage
+//localStorage.setItem("lists",JSON.stringify(listHolder.lists))
 
 
 
 
 
 
-
-
-
-
-
-
-
+// dates
 
 // local storage?
-
-
-
-// #*#*#*#*#*#*#*#*#*#*#
-// be careful with sequence and flow of functions
-// for example controlPanel.buttonListen() must be recalled after every render event so it captures new, or ignores deleted, buttons/clicks
-
-
-
-
-// form appears - adjust height and visibility + top: 80%?;
-// add list - (hopefully without fully re-rendering) - form design
-// complete list
-// delete list
-// edit list
-
-
-
-// form appears - adjust height and visibility + bottom: 80%;
-// add items to a list (hopefully without fully re-rendering) - form design
-// complete items
-// delete items
-// task completion & generation trackers
-            // (taskCompletion.tasksUncompleted & taskCompletion.tasksCompleted)
-// edit items
-
-
+// -for each list
+// - for each
 
 
 
