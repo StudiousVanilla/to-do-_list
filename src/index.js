@@ -303,7 +303,7 @@ class ControlPanel{
             else{
 
                 // makes a new item from inputs and adds this item to the relevant list
-                this.newItem(listID,submitItem.title.value, submitItem.dueDate.value, submitItem.notes.value, submitItem.priority.value);
+                this.newItem(listID,submitItem.title.value, submitItem.notes.value, submitItem.dueDate.value, submitItem.priority.value);
 
                 // removes form and brings back list of items
                 addTaskForm.style.transition = "0s"
@@ -427,6 +427,7 @@ class ControlPanel{
 
                 for(let i = 0; i < hex.innerHTML; i++){
                     taskCompletion.taskCompleted()
+                    taskCompletion.taskDeleted()
                 }
 
 
@@ -461,20 +462,11 @@ controlPanel.buttonListen()
 
 
 
+// when completing lists, remaining doesn't update but completed does
 
+// notes input in list form broken for Safari
 
-
-
-
-
-// tasks remaing is double deleting?
-
-
-// priority colours dissappear upon refresh?
-
-// font size on inputs is too small
-
-
+// notes displaying incorrectly when re-viewing lists (not at the add list rendering?)
 
 // dates
 
