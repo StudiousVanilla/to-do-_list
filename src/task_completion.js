@@ -7,7 +7,6 @@ class TaskCompletion{
     // increase tasks completed
     taskCompleted(){
         this.tasksCompleted++
-        this.tasksUncompleted--
     }
 
     // increase tasks uncompleted

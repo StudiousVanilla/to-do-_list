@@ -95,7 +95,6 @@ class ControlPanel{
 
     // when complete item is clicked
     completeItem(name,title){
-        taskCompletion.taskCompleted()
         // selects relevant list
         let list = listHolder.getList(name)
         // sends a completion message
@@ -130,7 +129,7 @@ class ControlPanel{
             this.newList(storedList.name,storedList.priority)
             // 3 populates lists with items - use stored lists item info
             for(const item of storedList.items){
-                this.newItem(storedList.name,item.title,item.notes,item.dueDate,item.newPriority)         
+                this.newItem(storedList.name,item.title,item.notes,item.dueDate,item.priority)         
             }  
         }
     }
@@ -227,9 +226,13 @@ class ControlPanel{
                         setTimeout(()=>{render.removeListItemRender(itemTitle)},1000)
                         this.removeItem(list.id,itemTitle)
                         listHexagon.innerHTML = listHolder.getList(list.id)["items"].length
+
                         taskCompletion.taskCompleted()
+
                         console.log(taskCompletion);
+
                         render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+
                         localStorage.setItem("tasks",(taskCompletion.tasksCompleted))
                     })
                 }
@@ -464,7 +467,12 @@ controlPanel.buttonListen()
 
 
 
-// local sotrage for tasks completed too
+// tasks remaing is double deleting?
+
+
+// priority colours dissappear upon refresh?
+
+// font size on inputs is too small
 
 
 
