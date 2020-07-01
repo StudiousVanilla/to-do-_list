@@ -21,6 +21,7 @@ class ControlPanel{
         // listmkaers makes list &
         // new list added to listholder array using
         listHolder.addList(listMaker.createList(name,[],priority))
+        localStorage.setItem("lists",JSON.stringify(listHolder.lists))
     }
 
     // called when order lists button is clicked
@@ -31,6 +32,7 @@ class ControlPanel{
     // called when remove list button is clicked
     removeList(name){
         listHolder.filterOutList(name)
+        localStorage.setItem("lists",JSON.stringify(listHolder.lists))
     }
 
     // called when complete list button is clicked  **************
@@ -70,6 +72,7 @@ class ControlPanel{
         // creats a new item object, and adds is to the relevant ToDo list
         list.addItemToList(itemMaker.createItem(listname,title,notes,dueDate,priority)) 
         render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+        localStorage.setItem("lists",JSON.stringify(listHolder.lists))
 
     }
 
@@ -87,6 +90,7 @@ class ControlPanel{
         list.filterOutItem(title)
         taskCompletion.taskDeleted()
         render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+        localStorage.setItem("lists",JSON.stringify(listHolder.lists))
     }
 
     // when complete item is clicked
@@ -100,12 +104,49 @@ class ControlPanel{
         taskCompletion.taskCompleted()
         render.taskCompletionRender(taskCompletion.taskCompleted,taskCompletion.tasksUncompleted)
         list.filterOutItem(title)
+
+        localStorage.setItem("lists",JSON.stringify(listHolder.lists))
     }
 
     editItems(name,title,newList,newTitle,newNotes,newDueDate,newPriority){
         let list = listHolder.getList(name)
         let item = list.getItem(title)
         item.editItem(newList,newTitle,newNotes,newDueDate,newPriority)
+    }
+
+    initaliseStoredLists(){
+        if (localStorage.length === 0){
+            localStorage.setItem("lists",JSON.stringify(listHolder.lists))
+            localStorage.setItem("tasks",(taskCompletion.tasksCompleted))
+        }   
+    }
+
+    getStoredLists(){
+        // 1 get stored lists
+        let storedLists =  JSON.parse(localStorage.getItem('lists'))
+
+        // 2 populate listholder with lists - use stored lists info
+        for(const storedList of storedLists){
+            this.newList(storedList.name,storedList.priority)
+            // 3 populates lists with items - use stored lists item info
+            for(const item of storedList.items){
+                this.newItem(storedList.name,item.title,item.notes,item.dueDate,item.newPriority)         
+            }  
+        }
+    }
+
+    getTasksCompleted(){
+        taskCompletion.tasksCompleted= parseInt(localStorage.getItem('tasks'))
+    }
+
+    homeRender(){
+    // 4 render lists -- make a control panel function
+    if(listHolder.lists.length === 0){    
+    }
+    else{
+        render.renderLists(listHolder.lists)
+        //render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+    }
     }
 
     buttonListen(){
@@ -184,10 +225,12 @@ class ControlPanel{
                         item.style.transition = "0.5s"
                         item.style.color =  completeItemButton.style.color
                         setTimeout(()=>{render.removeListItemRender(itemTitle)},1000)
-                        
-
                         this.removeItem(list.id,itemTitle)
                         listHexagon.innerHTML = listHolder.getList(list.id)["items"].length
+                        taskCompletion.taskCompleted()
+                        console.log(taskCompletion);
+                        render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+                        localStorage.setItem("tasks",(taskCompletion.tasksCompleted))
                     })
                 }
                 
@@ -385,7 +428,9 @@ class ControlPanel{
 
 
                 this.removeList(listName)
+
                 render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
+                localStorage.setItem("tasks",(taskCompletion.tasksCompleted))
 
                 let listsCompleted = document.querySelectorAll("#"+listName)
                 for(const listCompleted of listsCompleted){
@@ -402,46 +447,29 @@ class ControlPanel{
     }
 
 }
-
 let controlPanel = new ControlPanel()
 
-
-// 1 get stored lists
-let storedLists =  JSON.parse(localStorage.getItem('lists'))
-console.log(storedLists);
-
-// 2 populate listholder with lists - use stored lists info
-console.log(listHolder.lists);
-
-// 3 populates lists with items - use stored lists info
-
-// 4 render lists -- make a fcontrol panel function
-if(listHolder.lists.length === 0){
-    console.log("No lists");    
-}
-else{
-    render.renderLists(listHolder.lists)
-}
-
-// 5 button listen
+controlPanel.initaliseStoredLists()
+controlPanel.getStoredLists()
+controlPanel.getTasksCompleted()
+controlPanel.homeRender()
+render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
 controlPanel.buttonListen()
 
-// 6 clear localStorage
-//localStorage.clear()
-
-// 7 set localStorage
-//localStorage.setItem("lists",JSON.stringify(listHolder.lists))
 
 
 
+
+
+
+
+
+// local sotrage for tasks completed too
 
 
 
 // dates
 
-// local storage?
-// -for each list
-// - for each
 
 
 
