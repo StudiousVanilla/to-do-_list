@@ -70,19 +70,22 @@ h1{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center
+    justify-content: center;
+    font-size: 2vw;
 }
 
 #title-input{
     height: 3vw;
     width: 35%;
     margin: 5vw 1vw 0 4.25vw;
+    font-size: 2vw;
 }
 
 #date-input{
     height: 3vw;
     width: 35%;
     margin: 5vw 1.25vw 0 2vw;
+    font-size: 2vw;
 }
 
 #cancel-new-task{
@@ -429,6 +432,7 @@ h1{
     width: 80%;
     margin: 2vw 1.5vw 0 4vw;
     text-align: left;
+    font-size: 2vw;
 }
 
 #cancel-new-list{
@@ -452,10 +456,6 @@ h1{
     margin: 1vw 0 2vw 0;
     text-align: center;
 }
-
-
-
-
 
 .delete-list-button{
     background-color: red; 
