@@ -282,6 +282,7 @@ h1{
     left: 0;
     transition: 0.5s;
     visibility: hidden;
+    width: 100%;
 }
 
 .one-list-holder{
