@@ -242,8 +242,8 @@ h1{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
-    align-content: flex-end;
+    flex-direction: row;
+    justify-content: flex-end;
     margin-bottom: 3vw;
 }
 
@@ -271,9 +271,6 @@ h1{
     border-radius: 10%;
     margin-right: 6vw;
     margin-left: 1vw;
-}
-
-#new-list-button{
     background-color: green;
 }
 
