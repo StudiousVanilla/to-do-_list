@@ -18,7 +18,7 @@ class Render{
         let listName = document.createElement('li')
         listName.setAttribute('class','list-name')
         listName.setAttribute('id',cleanListName)
-        listName.innerHTML = cleanListName.replace("-", ' ')
+        listName.innerHTML = cleanListName.replace(/-/g, ' ')
         listName.style.borderColor = "var(--priority-"+priority+")"
 
         let hexagon = document.createElement("div")
@@ -92,7 +92,7 @@ class Render{
 
             let itemTitle = document.createElement('p')
             itemTitle.setAttribute('id','title')
-            itemTitle.innerHTML= title.replace('-'," ")
+            itemTitle.innerHTML= title.replace(/-/g ," ")
 
             let completeItemButton = document.createElement('button')
             completeItemButton.setAttribute('id',title+'-complete-item-button')

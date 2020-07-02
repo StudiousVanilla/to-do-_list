@@ -177,7 +177,7 @@ class ControlPanel{
                 let list = e.target
                 // using DOM element id the name of the list is gotten
                 // this list name populates the listName DOM element
-                listName.innerHTML = list.id.replace('-'," ")
+                listName.innerHTML = list.id.replace(/-/g," ")
 
                 // allows list name to be grabbed when clicking add task button
                 addTaskButton.setAttribute("id",list.id)
@@ -460,13 +460,6 @@ controlPanel.homeRender()
 render.taskCompletionRender(taskCompletion.tasksCompleted,taskCompletion.tasksUncompleted)
 controlPanel.buttonListen()
 
-
-
-// when completing lists, remaining doesn't update but completed does
-
-// notes input in list form broken for Safari
-
-// notes displaying incorrectly when re-viewing lists (not at the add list rendering?)
 
 // dates
 
